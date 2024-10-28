@@ -1,47 +1,28 @@
 package agh.ics.oop;
 
+import agh.ics.oop.model.MapDirection;
 import agh.ics.oop.model.MoveDirection;
+import agh.ics.oop.model.Vector2d;
 
 
 public class World {
     public static void main(String[] args){
-        System.out.println("system wystartował");
-        MoveDirection[] directions = OptionsParser.parse(args);
-        //run(args);
-        run(directions);
-        System.out.println("system zakończył działanie");
+        Vector2d position1 = new Vector2d(1,2);
+        System.out.println(position1);
+        Vector2d position2 = new Vector2d(-2,1);
+        System.out.println(position2);
+        System.out.println(position1.add(position2));
+//        MapDirection[] tab = {MapDirection.WEST, MapDirection.EAST, MapDirection.NORTH, MapDirection.SOUTH};
+//        for (MapDirection mapDirection : tab) {
+//            System.out.println(mapDirection.toSting());
+//            System.out.println(mapDirection.next());
+//            System.out.println(mapDirection.previous());
+//            System.out.println(mapDirection.toUnitVector());
+//            System.out.println();
+//        }
+
+
     }
-
-// PKT 9 metoda run informująca o tym że zwierzak idzie do przodu:
-//    public static void run(){
-//        System.out.println("Zwierzak idzie do przodu");
-//    }
-
-
-// PKT 11, 12 metoda run informująca że zwierzak idzie do przodu i wypisująca przekazane argumenty
-//    public static void run(String[] args){
-//        System.out.println("Zwierzak idzie do przodu");
-//        for(int index=0;index<args.length-1;index++){
-//            System.out.print(args[index]+", ");
-//        }
-//        if (args.length>0) {
-//            System.out.println(args[args.length - 1]);
-//        }
-//    }
-
-
-// PKT 14 metoda run interpretująca wprowadzone argumenty, ignorująca niepoprawne polecenia
-//    public static void run(String[] args){
-//        for (String arg: args) {
-//            switch (arg){
-//                case "f" -> System.out.println("Zwierzak idzie do przodu");
-//                case "b" -> System.out.println("Zwierzak idzie do tyłu");
-//                case "r" -> System.out.println("Zwierzak skręca w prawo");
-//                case "l" -> System.out.println("Zwierzak skręca w lewo");
-//            };
-//        }
-//    }
-
     public static void run(MoveDirection[] directions){
         for (MoveDirection direction: directions){
             switch (direction){
