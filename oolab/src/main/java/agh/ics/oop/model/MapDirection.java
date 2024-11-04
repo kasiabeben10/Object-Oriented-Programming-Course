@@ -3,7 +3,7 @@ package agh.ics.oop.model;
 public enum MapDirection {
     NORTH, SOUTH, WEST, EAST;
 
-    public String toSting(){
+    public String toString(){
         return switch (this) {
             case EAST -> "Wschód";
             case WEST -> "Zachód";
