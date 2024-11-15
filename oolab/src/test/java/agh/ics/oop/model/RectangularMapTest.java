@@ -2,6 +2,7 @@ package agh.ics.oop.model;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,8 +14,6 @@ class RectangularMapTest {
         RectangularMap map = new RectangularMap(4,4);
         assertEquals(map.getLowerLeft(), new Vector2d(0,0));
         assertEquals(map.getUpperRight(), new Vector2d(3,3));
-        assertEquals(map.getWidth(), 4);
-        assertEquals(map.getHeight(),4);
         assertTrue(map.getAnimals().isEmpty());
     }
 
@@ -191,16 +190,17 @@ class RectangularMapTest {
         assertTrue(map.place(animal1));
         assertTrue(map.place(animal2));
         map.move(animal1, MoveDirection.RIGHT);
+        Map<Vector2d,Animal> animals = map.getAnimals();
 
         for (int x=0; x<10; x++){
             for (int y=0; y<10; y++){
                 if (x==3 && y==3){
                     assertNotNull(map.objectAt(new Vector2d(x,y)));
-                    assertEquals(map.objectAt(new Vector2d(x,y)).getOrientation(),MapDirection.EAST);
+                    assertEquals(animals.get(new Vector2d(x,y)).getOrientation(),MapDirection.EAST);
                 }
                 else if (x==1 && y==2){
                     assertNotNull(map.objectAt(new Vector2d(x,y)));
-                    assertEquals(map.objectAt(new Vector2d(x,y)).getOrientation(),MapDirection.NORTH);
+                    assertEquals(animals.get(new Vector2d(x,y)).getOrientation(),MapDirection.NORTH);
                 }
                 else {
                     assertNull(map.objectAt(new Vector2d(x,y)));
@@ -223,5 +223,21 @@ class RectangularMapTest {
                   0: | | | |\r
                  -1: -------\r
                 """, map.toString());
+    }
+
+    @Test
+    void doesGetElementsReturnsMapAnimals(){
+        RectangularMap map = new RectangularMap(3,3);
+        Animal animal1 = new Animal(new Vector2d(1,1));
+        Animal animal2 = new Animal(new Vector2d(0,2));
+        Animal animal3 = new Animal(new Vector2d(1,1));
+        map.place(animal1);
+        map.place(animal2);
+        List<WorldElement> animals = map.getElements();
+
+        assertEquals(animals.size(),2);
+        assertTrue(animals.contains(animal1));
+        assertTrue(animals.contains(animal2));
+        assertFalse(animals.contains(animal3));
     }
 }

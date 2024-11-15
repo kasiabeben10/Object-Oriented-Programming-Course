@@ -1,6 +1,8 @@
 package agh.ics.oop.model;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 import java.util.Map;
 import static java.lang.Math.sqrt;
 import static org.junit.jupiter.api.Assertions.*;
@@ -237,6 +239,22 @@ class GrassFieldTest {
         GrassField map = new GrassField(5);
         assertNull(map.objectAt(new Vector2d(10,10)));
         //pole będzie wolne bo kępki są między (0,0) a (7,7)
+    }
+
+    @Test
+    void doesGetElementsReturnsMapAnimalsAndGrasses(){
+        GrassField map = new GrassField(3);
+        Animal animal1 = new Animal(new Vector2d(1,1));
+        Animal animal2 = new Animal(new Vector2d(0,2));
+        Animal animal3 = new Animal(new Vector2d(1,1));
+        map.place(animal1);
+        map.place(animal2);
+        List<WorldElement> mapElements = map.getElements();
+
+        assertEquals(mapElements.size(),2+3);
+        assertTrue(mapElements.contains(animal1));
+        assertTrue(mapElements.contains(animal2));
+        assertFalse(mapElements.contains(animal3));
     }
 
 }
