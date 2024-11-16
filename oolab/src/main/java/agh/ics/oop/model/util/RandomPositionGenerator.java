@@ -8,7 +8,7 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
     private final int maxWidth;
     private final int maxHeight;
     private final int noOfGrasses;
-    private final List<Vector2d> allPositions;
+    private final Vector2d[] allPositions;
 
     public RandomPositionGenerator(int maxWidth, int maxHeight, int noOfGrasses) {
         this.maxWidth = maxWidth;
@@ -17,11 +17,12 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
         this.allPositions = getAllPositions();
     }
 
-    private List<Vector2d> getAllPositions() {
-        List<Vector2d> positions = new ArrayList<>();
+    private Vector2d[] getAllPositions() {
+        Vector2d[] positions = new Vector2d[maxHeight*maxWidth];
+        int cnt = 0;
         for (int x=0; x<maxWidth; x++) {
             for (int y=0; y<maxHeight; y++) {
-                positions.add(new Vector2d(x, y));
+                positions[cnt++] = new Vector2d(x, y);
             }
         }
         return positions;
@@ -31,6 +32,7 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
     public Iterator<Vector2d> iterator() {
         return new Iterator<>() {
             private int generated = 0;
+            private final Random random = new Random();
 
             @Override
             public boolean hasNext() {
@@ -42,9 +44,18 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
                 if (!hasNext()) {
                     throw new NoSuchElementException("All generated");
                 }
-                Collections.shuffle(allPositions);
-                Vector2d generatedPos = allPositions.getLast();
-                allPositions.removeLast();
+                // z tablicy losujemy pozycję z indeksów od 0 do length-generated,
+                // która jeszcze nie była wylosowana
+                // po wylosowaniu i zapamiętaniu wylosowanego Vextora2d,
+                // na pozycję elementu wylosowanego
+                // wstawiamy ostanią możliwą pozycję z zakresu jeszcze nie wylosowanych
+                // pozycji i zawężamy zakres
+                // z którego będziemy losować następnym razem -
+                // zapewniamy to zwiększając licznik generated
+
+                int randomPos = random.nextInt(allPositions.length-generated);
+                Vector2d generatedPos = allPositions[randomPos];
+                allPositions[randomPos] = allPositions[allPositions.length-generated-1];
                 generated++;
                 return generatedPos;
             }
