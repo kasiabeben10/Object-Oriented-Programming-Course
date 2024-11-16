@@ -1,5 +1,7 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.RandomPositionGenerator;
+
 import java.util.*;
 import static java.lang.Math.sqrt;
 
@@ -7,21 +9,15 @@ public class GrassField extends AbstractWorldMap{
     private final Map<Vector2d, Grass> grasses = new HashMap<>();
 
     public GrassField(int noOfGrass){
-        Vector2d grassUpperRight = new Vector2d((int) (sqrt(noOfGrass * 10)), (int) (sqrt(noOfGrass * 10)));
+        int maxWidth = (int)sqrt(10*noOfGrass);
+        int maxHeight = (int)sqrt(10*noOfGrass);
+        Vector2d grassUpperRight = new Vector2d(maxWidth, maxHeight);
 
-        //naiwne losowanie
-        Random random = new Random();
-        int i = 0;
-        while (i < noOfGrass) {
-            int x = random.nextInt(grassUpperRight.getX()+1);
-            int y = random.nextInt(grassUpperRight.getY()+1);
-
-            if (grasses.get(new Vector2d(x,y)) == null){
-                this.grasses.put(new Vector2d(x,y),new Grass(new Vector2d(x,y)));
-                i++;
-            }
+        //deterministyczne losowanie pozycji kępek trawy
+        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(maxWidth, maxHeight, noOfGrass);
+        for(Vector2d grassPosition : randomPositionGenerator) {
+            grasses.put(grassPosition, new Grass(grassPosition));
         }
-
     }
 
     public Map<Vector2d, Grass> getGrasses() {

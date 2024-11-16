@@ -15,6 +15,15 @@ class GrassFieldTest {
 
         assertEquals(map.getGrasses().size(),5);
         assertTrue(map.getAnimals().isEmpty());
+        assertEquals(map.getLowerLeft(),new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE));
+        assertEquals(map.getUpperRight(), new Vector2d(Integer.MAX_VALUE,Integer.MAX_VALUE));
+
+        Map<Vector2d, Grass> grasses = map.getGrasses();
+        for (Vector2d grassPosition:grasses.keySet()){
+            assertTrue(grassPosition.follows(map.getLowerLeft()));
+            assertTrue(grassPosition.precedes(map.getUpperRight()));
+        }
+
     }
 
     @Test
