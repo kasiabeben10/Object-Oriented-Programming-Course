@@ -2,7 +2,7 @@ package agh.ics.oop.model;
 
 import static agh.ics.oop.model.MapDirection.NORTH;
 
-public class Animal {
+public class Animal implements WorldElement{
     private MapDirection orientation = MapDirection.NORTH;
     private Vector2d position;
 
@@ -28,6 +28,7 @@ public class Animal {
         return orientation;
     }
 
+    @Override
     public Vector2d getPosition() {
         return position;
     }

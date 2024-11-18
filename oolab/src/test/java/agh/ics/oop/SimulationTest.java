@@ -213,8 +213,10 @@ class SimulationTest {
         RectangularMap map = new RectangularMap(2,3);
         Simulation simulation = new Simulation(positions, directions, map);
 
-        for (int i=0;i<map.getWidth();i++){
-            for (int j=0; j<map.getHeight();j++){
+        int width = map.getUpperRight().getX()-map.getLowerLeft().getX()+1;
+        int height = map.getUpperRight().getY()-map.getLowerLeft().getY()+1;
+        for (int i=0;i<width;i++){
+            for (int j=0; j<height;j++){
                 if (i==0 && j==1 || i==1 && j==2){
                     assertTrue(map.isOccupied(new Vector2d(i,j)));
                 }
@@ -227,8 +229,8 @@ class SimulationTest {
         assertEquals(map.getAnimals().get(new Vector2d(1,2)).getOrientation(),MapDirection.NORTH);
 
         simulation.run();
-        for (int i=0;i<map.getWidth();i++){
-            for (int j=0; j<map.getHeight();j++){
+        for (int i=0;i<width;i++){
+            for (int j=0; j<height;j++){
                 if (i==0 && j==2){
                     assertTrue(map.isOccupied(new Vector2d(i,j)));
                     assertEquals(map.getAnimals().get(new Vector2d(i,j)).getOrientation(),MapDirection.WEST);
