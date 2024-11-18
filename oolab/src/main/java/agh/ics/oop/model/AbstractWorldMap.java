@@ -13,7 +13,6 @@ public abstract class AbstractWorldMap implements WorldMap{
     protected final Map<Vector2d, Animal> animals = new HashMap<>();
     protected final MapVisualizer visualizer = new MapVisualizer(this);
 
-
     public Vector2d getLowerLeft() {
         return lowerLeft;
     }
@@ -24,7 +23,7 @@ public abstract class AbstractWorldMap implements WorldMap{
 
     @Override
     public boolean canMoveTo(Vector2d position) {
-        return position.follows(lowerLeft) && position.precedes(upperRight) && !(objectAt(position) instanceof Animal);
+        return !(objectAt(position) instanceof Animal);
     }
 
     @Override
