@@ -44,7 +44,6 @@ public class Simulation {
         for (int i=0; i<directions.size();i++){
             int animal_no = i % animals.size();
             map.move(animals.get(animal_no),directions.get(i));
-            System.out.println(map);
         }
     }
 }
