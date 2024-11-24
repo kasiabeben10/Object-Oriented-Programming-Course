@@ -13,8 +13,8 @@ class RectangularMapTest {
     @Test
     void isRectangularMapInitializedCorrect(){
         RectangularMap map = new RectangularMap(4,4);
-        assertEquals(map.getLowerLeft(), new Vector2d(0,0));
-        assertEquals(map.getUpperRight(), new Vector2d(3,3));
+        assertEquals(map.getCurrentBounds().lowerLeft(), new Vector2d(0,0));
+        assertEquals(map.getCurrentBounds().upperRight(), new Vector2d(3,3));
         assertTrue(map.getAnimals().isEmpty());
     }
 
@@ -129,16 +129,16 @@ class RectangularMapTest {
         //bottom
         map.move(animal, MoveDirection.BACKWARD);
         assertEquals(animal.getPosition(),new Vector2d(0,0));
-        assertTrue(animal.getPosition().follows(map.getLowerLeft()));
-        assertTrue(animal.getPosition().precedes(map.getUpperRight()));
+        assertTrue(animal.getPosition().follows(map.getCurrentBounds().lowerLeft()));
+        assertTrue(animal.getPosition().precedes(map.getCurrentBounds().upperRight()));
 
 
         //left
         map.move(animal, MoveDirection.LEFT);
         map.move(animal, MoveDirection.FORWARD);
         assertEquals(animal.getPosition(),new Vector2d(0,0));
-        assertTrue(animal.getPosition().follows(map.getLowerLeft()));
-        assertTrue(animal.getPosition().precedes(map.getUpperRight()));
+        assertTrue(animal.getPosition().follows(map.getCurrentBounds().lowerLeft()));
+        assertTrue(animal.getPosition().precedes(map.getCurrentBounds().upperRight()));
 
         //top
         map.move(animal, MoveDirection.RIGHT);
@@ -150,8 +150,8 @@ class RectangularMapTest {
         map.move(animal, MoveDirection.FORWARD);
         map.move(animal, MoveDirection.FORWARD);
         assertEquals(animal.getPosition(),new Vector2d(0,4));
-        assertTrue(animal.getPosition().follows(map.getLowerLeft()));
-        assertTrue(animal.getPosition().precedes(map.getUpperRight()));
+        assertTrue(animal.getPosition().follows(map.getCurrentBounds().lowerLeft()));
+        assertTrue(animal.getPosition().precedes(map.getCurrentBounds().upperRight()));
 
         //right
         map.move(animal, MoveDirection.RIGHT);
@@ -163,8 +163,8 @@ class RectangularMapTest {
         map.move(animal, MoveDirection.FORWARD);
         map.move(animal, MoveDirection.FORWARD);
         assertEquals(animal.getPosition(),new Vector2d(4,4));
-        assertTrue(animal.getPosition().follows(map.getLowerLeft()));
-        assertTrue(animal.getPosition().precedes(map.getUpperRight()));
+        assertTrue(animal.getPosition().follows(map.getCurrentBounds().lowerLeft()));
+        assertTrue(animal.getPosition().precedes(map.getCurrentBounds().upperRight()));
     }
 
     @Test

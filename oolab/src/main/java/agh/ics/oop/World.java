@@ -14,7 +14,8 @@ public class World {
             simulation.run();
         } catch (IllegalArgumentException e){
             System.out.println("EXCEPTION: \n" + e.getMessage());
-            System.exit(1);
+            System.out.println("Warning: Program failed!!!");
+            return; //przerwanie programu
         }
     }
 
