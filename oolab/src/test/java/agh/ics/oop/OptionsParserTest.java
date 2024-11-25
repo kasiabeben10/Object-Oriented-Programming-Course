@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class OptionsParserTest {
@@ -42,15 +41,20 @@ class OptionsParserTest {
     }
 
     @Test
-    void isUnknownParsedToNothing(){
+    void doesUnknownArgMakeParserThrowsException(){
         String[] given = {"k"};
-        List<MoveDirection> expected = new ArrayList<>();
-        assertEquals(expected, OptionsParser.parse(given));
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse(given));
+    }
+
+    @Test
+    void doesLongerArrayWithUnknownArgMakeParserThrowsException(){
+        String[] given = {"l", "f", "q", "+", "b", "b", "e", "r"};
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse(given));
     }
 
     @Test
     void isLongerArrayParsedCorrect(){
-        String[] given = {"l", "f", "q", "+", "b", "b", "e", "r"};
+        String[] given = {"l", "f", "b", "b", "r"};
         List<MoveDirection> expected = List.of(MoveDirection.LEFT, MoveDirection.FORWARD, MoveDirection.BACKWARD, MoveDirection.BACKWARD, MoveDirection.RIGHT);
         assertEquals(expected, OptionsParser.parse(given));
     }

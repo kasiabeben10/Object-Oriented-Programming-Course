@@ -27,8 +27,8 @@ class SimulationTest {
         Animal animal = animals.get(0);
         assertSame(animal.getOrientation(), MapDirection.WEST);
         assertTrue(animal.isAt(new Vector2d(2,4)));
-        assertTrue(animal.getPosition().follows(map.getLowerLeft()));
-        assertTrue(animal.getPosition().precedes(map.getUpperRight()));
+        assertTrue(animal.getPosition().follows(map.getCurrentBounds().lowerLeft()));
+        assertTrue(animal.getPosition().precedes(map.getCurrentBounds().upperRight()));
     }
 
     @Test
@@ -68,16 +68,16 @@ class SimulationTest {
         //bottom
         animal.move(MoveDirection.BACKWARD, map);
         assertEquals(animal.getPosition(),new Vector2d(0,0));
-        assertTrue(animal.getPosition().follows(map.getLowerLeft()));
-        assertTrue(animal.getPosition().precedes(map.getUpperRight()));
+        assertTrue(animal.getPosition().follows(map.getCurrentBounds().lowerLeft()));
+        assertTrue(animal.getPosition().precedes(map.getCurrentBounds().upperRight()));
 
 
         //left
         animal.move(MoveDirection.LEFT, map);
         animal.move(MoveDirection.FORWARD, map);
         assertEquals(animal.getPosition(),new Vector2d(0,0));
-        assertTrue(animal.getPosition().follows(map.getLowerLeft()));
-        assertTrue(animal.getPosition().precedes(map.getUpperRight()));
+        assertTrue(animal.getPosition().follows(map.getCurrentBounds().lowerLeft()));
+        assertTrue(animal.getPosition().precedes(map.getCurrentBounds().upperRight()));
 
         //top
         animal.move(MoveDirection.RIGHT,map);
@@ -89,8 +89,8 @@ class SimulationTest {
         animal.move(MoveDirection.FORWARD,map);
         animal.move(MoveDirection.FORWARD,map);
         assertEquals(animal.getPosition(),new Vector2d(0,4));
-        assertTrue(animal.getPosition().follows(map.getLowerLeft()));
-        assertTrue(animal.getPosition().precedes(map.getUpperRight()));
+        assertTrue(animal.getPosition().follows(map.getCurrentBounds().lowerLeft()));
+        assertTrue(animal.getPosition().precedes(map.getCurrentBounds().upperRight()));
 
         //right
         animal.move(MoveDirection.RIGHT,map);
@@ -102,13 +102,13 @@ class SimulationTest {
         animal.move(MoveDirection.FORWARD,map);
         animal.move(MoveDirection.FORWARD,map);
         assertEquals(animal.getPosition(),new Vector2d(4,4));
-        assertTrue(animal.getPosition().follows(map.getLowerLeft()));
-        assertTrue(animal.getPosition().precedes(map.getUpperRight()));
+        assertTrue(animal.getPosition().follows(map.getCurrentBounds().lowerLeft()));
+        assertTrue(animal.getPosition().precedes(map.getCurrentBounds().upperRight()));
     }
 
     @Test
     void areStringArgsInterpretedCorrect(){
-        String[] args = {"f","l","x","r","b","e","l","b"};
+        String[] args = {"f","l","r","b","l","b"};
         List<MoveDirection> directions = OptionsParser.parse(args);
         List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
         Simulation simulation = new Simulation(positions, directions,new RectangularMap(5,5));
@@ -213,8 +213,8 @@ class SimulationTest {
         RectangularMap map = new RectangularMap(2,3);
         Simulation simulation = new Simulation(positions, directions, map);
 
-        int width = map.getUpperRight().getX()-map.getLowerLeft().getX()+1;
-        int height = map.getUpperRight().getY()-map.getLowerLeft().getY()+1;
+        int width = map.getCurrentBounds().upperRight().getX()-map.getCurrentBounds().lowerLeft().getX()+1;
+        int height = map.getCurrentBounds().upperRight().getY()-map.getCurrentBounds().lowerLeft().getY()+1;
         for (int i=0;i<width;i++){
             for (int j=0; j<height;j++){
                 if (i==0 && j==1 || i==1 && j==2){

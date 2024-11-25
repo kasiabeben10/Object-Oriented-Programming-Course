@@ -4,6 +4,7 @@ import agh.ics.oop.model.Animal;
 import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.WorldMap;
+import agh.ics.oop.model.util.IncorrectPositionException;
 
 import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
@@ -19,8 +20,11 @@ public class Simulation {
         this.map = map;
         for (Vector2d position : positions) {
             Animal animal = new Animal(position);
-            if (this.map.place(animal)) {
+            try {
+                map.place(animal);
                 animals.add(animal);
+            } catch (IncorrectPositionException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -40,7 +44,6 @@ public class Simulation {
         for (int i=0; i<directions.size();i++){
             int animal_no = i % animals.size();
             map.move(animals.get(animal_no),directions.get(i));
-            System.out.println(map);
         }
     }
 }
