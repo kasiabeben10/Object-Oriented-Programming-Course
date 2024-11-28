@@ -62,7 +62,7 @@ public interface WorldMap extends MoveValidator {
 
     /**
      *
-     * @return unikalny indentyfikator mapy
+     * @return map id
      */
     UUID getId();
 }
