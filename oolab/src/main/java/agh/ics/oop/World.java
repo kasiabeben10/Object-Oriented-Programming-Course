@@ -8,7 +8,6 @@ import java.util.List;
 
 public class World {
     public static void main(String[] args) {
-
         try {
             MapChangeListener observer = new ConsoleMapDisplay();
             List<AbstractWorldMap> maps = new ArrayList<>();
@@ -28,7 +27,8 @@ public class World {
                 simulations.add(simulation);
             }
             SimulationEngine simulationEngine = new SimulationEngine(simulations);
-            simulationEngine.runAsync();
+//            simulationEngine.runAsync();
+            simulationEngine.runAsyncInThreadPool();
         } catch (IllegalArgumentException e){
             System.out.println("EXCEPTION: \n" + e.getMessage());
             System.out.println("Warning: Program failed!!!");
