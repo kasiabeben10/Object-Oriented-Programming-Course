@@ -10,7 +10,7 @@ import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Simulation {
+public class Simulation implements Runnable{
     private List<Animal> animals = new ArrayList<>();
     private List<MoveDirection> directions;
     private final WorldMap map;
