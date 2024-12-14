@@ -22,7 +22,6 @@ public class SimulationApp extends Application {
         SimulationPresenter presenter = loader.getController();
         configureStage(primaryStage, viewRoot);
         primaryStage.show();
-
     }
 
     private void configureStage(Stage primaryStage, BorderPane viewRoot) {
