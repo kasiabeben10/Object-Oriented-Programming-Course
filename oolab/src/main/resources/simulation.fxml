@@ -20,7 +20,7 @@
     <bottom>
         <VBox spacing="10" alignment="CENTER" styleClass="bottom-section">
             <Label fx:id="movesDescriptionLabel" alignment="CENTER"/>
-            <TextField fx:id="movesTextField" promptText="Enter move" alignment="CENTER"/>
+            <TextField fx:id="movesTextField" promptText="Enter move" alignment="CENTER" focusTraversable="false"/>
             <Button fx:id="startButton" text="Start" onAction="#onSimulationStartClicked"/>
         </VBox>
 

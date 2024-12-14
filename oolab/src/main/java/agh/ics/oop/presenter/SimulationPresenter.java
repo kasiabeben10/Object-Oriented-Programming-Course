@@ -112,7 +112,7 @@ public class SimulationPresenter implements MapChangeListener {
                     startButton.setDisable(false);
                 });
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                throw(new RuntimeException(e));
             }
         }).start();
         startButton.setDisable(true);
