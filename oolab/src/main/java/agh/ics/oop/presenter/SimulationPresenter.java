@@ -80,7 +80,7 @@ public class SimulationPresenter implements MapChangeListener {
         mapGrid.getRowConstraints().clear();
     }
     @Override
-    public synchronized void mapChanged(WorldMap worldMap, String message){
+    public void mapChanged(WorldMap worldMap, String message){
         Platform.runLater(()->{
             drawMap();
             movesDescriptionLabel.setText(message);
@@ -112,7 +112,7 @@ public class SimulationPresenter implements MapChangeListener {
                     startButton.setDisable(false);
                 });
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                throw(new RuntimeException(e));
             }
         }).start();
         startButton.setDisable(true);
