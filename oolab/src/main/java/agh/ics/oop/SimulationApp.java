@@ -20,13 +20,6 @@ public class SimulationApp extends Application {
         loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
         BorderPane viewRoot = loader.load();
         SimulationPresenter presenter = loader.getController();
-        AbstractWorldMap map = new GrassField((10));
-        presenter.setMap(map);
-        map.addObserver(presenter);
-        List<MoveDirection> directions = OptionsParser.parse(getParameters().getRaw().toArray(new String[0]));
-        List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4), new Vector2d(2, 2));
-        Simulation simulation = new Simulation(positions, directions, map);
-        simulation.run();
         configureStage(primaryStage, viewRoot);
         primaryStage.show();
 
