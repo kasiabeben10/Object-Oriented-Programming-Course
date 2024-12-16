@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation implements Runnable{
+    private int sleepingSpan = 1000;
     private List<Animal> animals = new ArrayList<>();
     private List<MoveDirection> directions;
     private final WorldMap map;
@@ -43,6 +44,12 @@ public class Simulation implements Runnable{
         }
         for (int i=0; i<directions.size();i++){
             int animal_no = i % animals.size();
+            try {
+                Thread.sleep(sleepingSpan);
+            }
+            catch (InterruptedException e){
+                throw new RuntimeException(e);
+            }
             map.move(animals.get(animal_no),directions.get(i));
         }
     }
