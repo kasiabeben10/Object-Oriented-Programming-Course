@@ -31,7 +31,7 @@ public class SimulationPresenter implements MapChangeListener {
     @FXML
     private TextField movesTextField;
 
-    public void setMap(WorldMap map) {
+    public void setWorldMap(WorldMap map) {
         this.map = map;
     }
 
@@ -95,7 +95,7 @@ public class SimulationPresenter implements MapChangeListener {
         List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
         AbstractWorldMap simulationMap = new GrassField((10));
         Simulation simulation = new Simulation(positions, directions, simulationMap);
-        this.setMap(simulationMap);
+        this.setWorldMap(simulationMap);
         simulationMap.addObserver(this);
         infoLabel.setManaged(false);
         infoLabel.setVisible(false);
