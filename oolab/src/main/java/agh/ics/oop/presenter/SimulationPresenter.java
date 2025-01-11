@@ -103,6 +103,7 @@ public class SimulationPresenter implements MapChangeListener {
             LocalDateTime currentTime = LocalDateTime.now();
             System.out.println(currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s")) + ' ' + message);
         });
+        simulationMap.addObserver(new FileMapDisplay());
         infoLabel.setManaged(false);
         infoLabel.setVisible(false);
         movesDescriptionLabel.setText("Simulation started with params: " + moves);
