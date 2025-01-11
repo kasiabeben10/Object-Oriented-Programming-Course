@@ -239,7 +239,7 @@ class RectangularMapTest {
                     assertEquals(animals.get(new Vector2d(x,y)).getOrientation(),MapDirection.NORTH);
                 }
                 else {
-                    assertNull(map.objectAt(new Vector2d(x,y)));
+                    assertTrue(map.objectAt(new Vector2d(x,y)).isEmpty());
                 }
             }
         }

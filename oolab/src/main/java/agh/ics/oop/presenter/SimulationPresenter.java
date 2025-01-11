@@ -56,9 +56,8 @@ public class SimulationPresenter implements MapChangeListener {
         for (int x = left; x <= right; x++) {
             for (int y = bottom; y <= top; y++) {
                 Vector2d position = new Vector2d(x, y);
-                if (map.isOccupied(position)) {
-                    mapGrid.add(new Label(map.objectAt(position).toString()), x - left + 1, top - y + 1);
-                }
+                map.objectAt(position).ifPresent(worldElement ->
+                                mapGrid.add(new Label(worldElement.toString()), position.getX() - left + 1, top - position.getY() + 1));
             }
         }
     }
@@ -78,7 +77,7 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     private void clearGrid() {
-        mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0)); // hack to retain visible grid lines
+        mapGrid.getChildren().retainAll(mapGrid.getChildren().getFirst()); // hack to retain visible grid lines
         mapGrid.getColumnConstraints().clear();
         mapGrid.getRowConstraints().clear();
     }
