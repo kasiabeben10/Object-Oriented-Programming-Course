@@ -87,9 +87,12 @@ public abstract class AbstractWorldMap implements WorldMap{
         Comparator<Animal> animalComparator
                 = Comparator.comparing((Animal animal) -> animal.getPosition().getX())
                 .thenComparing((Animal animal) -> animal.getPosition().getY());
-        List<Animal> orderedAnimals = new ArrayList<>(animals.values());
-        Collections.sort(orderedAnimals,animalComparator);
-        return orderedAnimals;
+//        List<Animal> orderedAnimals = new ArrayList<>(animals.values());
+//        Collections.sort(orderedAnimals,animalComparator);
+//        return orderedAnimals;
+        return animals.values().stream()
+                .sorted(animalComparator)
+                .collect(Collectors.toList());
     }
 
 }
