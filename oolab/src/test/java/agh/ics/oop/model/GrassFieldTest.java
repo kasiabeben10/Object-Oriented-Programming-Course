@@ -2,7 +2,11 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.IncorrectPositionException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import static java.lang.Math.sqrt;
@@ -326,4 +330,29 @@ class GrassFieldTest {
         assertFalse(mapElements.contains(animal3));
     }
 
+    @Test
+    void isReturnedCollectionSortedInGetOrderedAnimals(){
+        //given
+        Animal animal1 = new Animal(new Vector2d(2,2));
+        Animal animal2 = new Animal(new Vector2d(2,3));
+        Animal animal3 = new Animal(new Vector2d(1,2));
+        Animal animal4 = new Animal(new Vector2d(7,2));
+        GrassField map = new GrassField(10);
+        try {
+            map.place(animal1);
+            map.place(animal2);
+            map.place(animal3);
+            map.place(animal4);
+        }
+        catch (IncorrectPositionException e){
+            fail("Exception: " + e.getMessage());
+        }
+
+        //when
+        Collection<Animal> orderedAnimals = map.getOrderedAnimals();
+
+        //then
+        Animal[] properOrder = {animal3, animal1, animal2, animal4};
+        assertArrayEquals(orderedAnimals.toArray(), properOrder);
+    }
 }

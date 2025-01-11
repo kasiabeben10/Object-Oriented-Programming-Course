@@ -5,6 +5,8 @@ import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class AbstractWorldMap implements WorldMap{
     protected final Map<Vector2d, Animal> animals = new HashMap<>();
@@ -79,4 +81,15 @@ public abstract class AbstractWorldMap implements WorldMap{
     public UUID getId() {
         return mapId;
     }
+
+    @Override
+    public Collection<Animal> getOrderedAnimals(){
+        Comparator<Animal> animalComparator
+                = Comparator.comparing((Animal animal) -> animal.getPosition().getX())
+                .thenComparing((Animal animal) -> animal.getPosition().getY());
+        List<Animal> orderedAnimals = new ArrayList<>(animals.values());
+        Collections.sort(orderedAnimals,animalComparator);
+        return orderedAnimals;
+    }
+
 }

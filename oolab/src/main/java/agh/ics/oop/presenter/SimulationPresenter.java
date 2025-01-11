@@ -14,6 +14,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class SimulationPresenter implements MapChangeListener {
@@ -97,6 +100,10 @@ public class SimulationPresenter implements MapChangeListener {
         Simulation simulation = new Simulation(positions, directions, simulationMap);
         this.setWorldMap(simulationMap);
         simulationMap.addObserver(this);
+        simulationMap.addObserver((worldMap, message)->{
+            LocalDateTime currentTime = LocalDateTime.now();
+            System.out.println(currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s")) + ' ' + message);
+        });
         infoLabel.setManaged(false);
         infoLabel.setVisible(false);
         movesDescriptionLabel.setText("Simulation started with params: " + moves);
