@@ -32,6 +32,16 @@ public class Animal implements WorldElement{
         return position;
     }
 
+    @Override
+    public String getResourceName(){
+        return switch(this.orientation){
+            case MapDirection.NORTH -> "/images/up.png";
+            case MapDirection.EAST -> "/images/right.png";
+            case MapDirection.SOUTH -> "/images/down.png";
+            case MapDirection.WEST -> "/images/left.png";
+        };
+    }
+
     public void move(MoveDirection direction, MoveValidator validator){
 
         switch(direction){
