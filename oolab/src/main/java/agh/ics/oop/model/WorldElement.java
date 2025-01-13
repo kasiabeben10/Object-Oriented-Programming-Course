@@ -6,5 +6,7 @@ public interface WorldElement {
 
     String toString();
 
+    String getResourceName();
+
 
 }

@@ -5,6 +5,7 @@ import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class AbstractWorldMap implements WorldMap{
     protected final Map<Vector2d, Animal> animals = new HashMap<>();
@@ -14,7 +15,7 @@ public abstract class AbstractWorldMap implements WorldMap{
 
     @Override
     public boolean canMoveTo(Vector2d position) {
-        return !(objectAt(position) instanceof Animal);
+        return objectAt(position).map(element -> !(element instanceof Animal)).orElse(true);
     }
 
     @Override
@@ -40,12 +41,12 @@ public abstract class AbstractWorldMap implements WorldMap{
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        return objectAt(position) != null;
+        return objectAt(position).isPresent();
     }
 
     @Override
-    public WorldElement objectAt(Vector2d position) {
-        return animals.get(position);
+    public Optional<WorldElement> objectAt(Vector2d position) {
+        return Optional.ofNullable(animals.get(position));
     }
 
     public Map<Vector2d, Animal> getAnimals() {
@@ -79,4 +80,18 @@ public abstract class AbstractWorldMap implements WorldMap{
     public UUID getId() {
         return mapId;
     }
+
+    @Override
+    public Collection<Animal> getOrderedAnimals(){
+        Comparator<Animal> animalComparator
+                = Comparator.comparing((Animal animal) -> animal.getPosition().getX())
+                .thenComparing((Animal animal) -> animal.getPosition().getY());
+//        List<Animal> orderedAnimals = new ArrayList<>(animals.values());
+//        Collections.sort(orderedAnimals,animalComparator);
+//        return orderedAnimals;
+        return animals.values().stream()
+                .sorted(animalComparator)
+                .collect(Collectors.toList());
+    }
+
 }

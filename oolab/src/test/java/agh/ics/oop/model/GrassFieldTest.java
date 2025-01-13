@@ -2,7 +2,7 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.IncorrectPositionException;
 import org.junit.jupiter.api.Test;
-
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import static java.lang.Math.sqrt;
@@ -90,8 +90,10 @@ class GrassFieldTest {
         assertEquals(map.getAnimals().size(),2);
         assertTrue(map.isOccupied(animal1.getPosition()));
         assertTrue(map.isOccupied(animal3.getPosition()));
-        assertTrue(map.objectAt(animal1.getPosition()) instanceof Animal);
-        assertTrue(map.objectAt(animal3.getPosition()) instanceof Animal);
+        assertTrue(map.objectAt(animal1.getPosition()).isPresent());
+        assertInstanceOf(Animal.class, map.objectAt(animal1.getPosition()).get());
+        assertTrue(map.objectAt(animal3.getPosition()).isPresent());
+        assertInstanceOf(Animal.class, map.objectAt(animal3.getPosition()).get());
     }
 
     @Test
@@ -133,17 +135,22 @@ class GrassFieldTest {
         assertFalse(map.canMoveTo(new Vector2d(2, 2)));
         assertFalse(map.canMoveTo(new Vector2d(2,1)));
 
-        for (int x=0; x<=10; x++){
-            for (int y=0; y<=10; y++){
-                if (!(map.objectAt(new Vector2d(x,y)) instanceof Animal)){
-                    assertTrue(map.canMoveTo(new Vector2d(x,y))); //can move onto grass or empty place
-                }
-                else{
-                    assertFalse(map.canMoveTo(new Vector2d(x,y))); //cannot move on another animal
-                }
+        for (int x=0; x<=10; x++) {
+            for (int y = 0; y <= 10; y++) {
+                Vector2d position = new Vector2d(x, y);
+                map.objectAt(position).ifPresentOrElse(
+                        element -> {
+                            if (element instanceof Animal) {
+                                assertFalse(map.canMoveTo(position)); //cannot move on another animal
+                            } else {
+                                assertTrue(map.canMoveTo(position)); //can move onto grass or empty place
+                            }
+                        },
+                        () -> assertTrue(map.canMoveTo(position)) //can move onto empty place
+                );
             }
         }
-        assertTrue(map.canMoveTo(new Vector2d(30,22))); //canMoveToEmptyPlaceOutOfGrassArea
+        assertTrue(map.canMoveTo(new Vector2d(30,22))); // can move to empty place out of grass area
     }
 
     @Test
@@ -282,27 +289,25 @@ class GrassFieldTest {
     }
 
     @Test
-    void doesObjectAtReturnAppropriateObject(){
+    void doesObjectAtReturnAppropriateObject() {
         GrassField map = new GrassField(3);
         Map<Vector2d, Grass> grasses = map.getGrasses();
-        for (Vector2d position : grasses.keySet()){
-            assertTrue(map.objectAt(position) instanceof Grass);
-            assertFalse(map.objectAt(position) instanceof Animal);
+        for (Vector2d position : grasses.keySet()) {
+            assertInstanceOf(Grass.class, map.objectAt(position).orElseThrow());
+            assertFalse(map.objectAt(position).orElseThrow() instanceof Animal);
             try {
                 map.place(new Animal(position));
-                assertFalse(map.objectAt(position) instanceof Grass);
+                assertFalse(map.objectAt(position).orElseThrow() instanceof Grass);
             } catch (IncorrectPositionException e) {
-                assertTrue(map.objectAt(position) instanceof Animal);
+                assertInstanceOf(Animal.class, map.objectAt(position).orElseThrow());
             }
-
-
         }
     }
 
     @Test
     void isNullReturnedByObjectAtOnEmptyPosition(){
         GrassField map = new GrassField(5);
-        assertNull(map.objectAt(new Vector2d(10,10)));
+        assertTrue(map.objectAt(new Vector2d(10,10)).isEmpty());
         //pole będzie wolne bo kępki są między (0,0) a (7,7)
     }
 
@@ -326,4 +331,29 @@ class GrassFieldTest {
         assertFalse(mapElements.contains(animal3));
     }
 
+    @Test
+    void isReturnedCollectionSortedInGetOrderedAnimals(){
+        //given
+        Animal animal1 = new Animal(new Vector2d(2,2));
+        Animal animal2 = new Animal(new Vector2d(2,3));
+        Animal animal3 = new Animal(new Vector2d(1,2));
+        Animal animal4 = new Animal(new Vector2d(7,2));
+        GrassField map = new GrassField(10);
+        try {
+            map.place(animal1);
+            map.place(animal2);
+            map.place(animal3);
+            map.place(animal4);
+        }
+        catch (IncorrectPositionException e){
+            fail("Exception: " + e.getMessage());
+        }
+
+        //when
+        Collection<Animal> orderedAnimals = map.getOrderedAnimals();
+
+        //then
+        Animal[] properOrder = {animal3, animal1, animal2, animal4};
+        assertArrayEquals(orderedAnimals.toArray(), properOrder);
+    }
 }

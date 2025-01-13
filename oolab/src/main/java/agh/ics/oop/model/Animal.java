@@ -1,6 +1,5 @@
 package agh.ics.oop.model;
 
-import static agh.ics.oop.model.MapDirection.NORTH;
 
 public class Animal implements WorldElement{
     private MapDirection orientation = MapDirection.NORTH;
@@ -31,6 +30,16 @@ public class Animal implements WorldElement{
     @Override
     public Vector2d getPosition() {
         return position;
+    }
+
+    @Override
+    public String getResourceName(){
+        return switch(this.orientation){
+            case MapDirection.NORTH -> "/images/up.png";
+            case MapDirection.EAST -> "/images/right.png";
+            case MapDirection.SOUTH -> "/images/down.png";
+            case MapDirection.WEST -> "/images/left.png";
+        };
     }
 
     public void move(MoveDirection direction, MoveValidator validator){

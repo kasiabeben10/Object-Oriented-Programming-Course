@@ -14,6 +14,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class SimulationPresenter implements MapChangeListener {
@@ -53,9 +56,9 @@ public class SimulationPresenter implements MapChangeListener {
         for (int x = left; x <= right; x++) {
             for (int y = bottom; y <= top; y++) {
                 Vector2d position = new Vector2d(x, y);
-                if (map.isOccupied(position)) {
-                    mapGrid.add(new Label(map.objectAt(position).toString()), x - left + 1, top - y + 1);
-                }
+                map.objectAt(position).ifPresent(worldElement ->
+                        mapGrid.add(new WorldElementBox(worldElement), position.getX() - left + 1, top - position.getY() + 1));
+//                        mapGrid.add(new Label(worldElement.toString()), position.getX() - left + 1, top - position.getY() + 1));
             }
         }
     }
@@ -75,7 +78,7 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     private void clearGrid() {
-        mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0)); // hack to retain visible grid lines
+        mapGrid.getChildren().retainAll(mapGrid.getChildren().getFirst()); // hack to retain visible grid lines
         mapGrid.getColumnConstraints().clear();
         mapGrid.getRowConstraints().clear();
     }
@@ -97,6 +100,11 @@ public class SimulationPresenter implements MapChangeListener {
         Simulation simulation = new Simulation(positions, directions, simulationMap);
         this.setWorldMap(simulationMap);
         simulationMap.addObserver(this);
+        simulationMap.addObserver((worldMap, message)->{
+            LocalDateTime currentTime = LocalDateTime.now();
+            System.out.println(currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s")) + ' ' + message);
+        });
+        simulationMap.addObserver(new FileMapDisplay());
         infoLabel.setManaged(false);
         infoLabel.setVisible(false);
         movesDescriptionLabel.setText("Simulation started with params: " + moves);
