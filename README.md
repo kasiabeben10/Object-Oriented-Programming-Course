@@ -1,9 +1,5 @@
-# PO_2024_PN1315_BEBEN
-PROGRAMOWANIE OBIEKTOWE \
-Repozytorium stworzone na cele zajęć z przedmiotu programowanie obiektowe.
+# Object Oriented Programming
+Task solutions from lab-part "object oriented programming course" at AGH UST 2023/2024.
 
-Imię i nazwisko: Katarzyna Bęben \
-Grupa i godzina zajęć: grupa 13 PN_13_15 \
-Nazwa zwierzaka: Obiekciak \
-Link do profilu na gitexercises.fracz.com: https://gitexercises.fracz.com/c/hds
+Final OOP course project is [here](https://github.com/OlaszPL/Darwin-world).
 
